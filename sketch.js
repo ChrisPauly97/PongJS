@@ -59,7 +59,6 @@ function Puck(){
   }
   // Check if the Puck has hit a paddle and if so, change its speed and yposition accordingly
   this.checkPaddles = function(){
-    var collided = false;
     // If the Puck collides with the left paddle
     if(this.x < 30 + this.r && this.y > LeftPaddle.PaddleHeight && this.y < LeftPaddle.PaddleHeight + 80){
       // Rebound off of it
@@ -92,7 +91,13 @@ function Paddle(){
     // Updates the position of the paddle
     this.update = function(){
         this.PaddleHeight += this.ychange;
-    }
+        if(this.PaddleHeight < 0 ){
+          this.PaddleHeight = 0;
+        }
+        if(this.PaddleHeight > 320){
+          this.PaddleHeight = 320;
+        }
+      }
     // Draws the paddle on a given side
     this.draw = function(side){
         rect(side,this.PaddleHeight,20,80);
@@ -102,6 +107,7 @@ function Paddle(){
         this.ychange = value;
     }
 }
+
 // Defines the controls for the Paddles
 function keyPressed(){
   // If the paddle is moving up
