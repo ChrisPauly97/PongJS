@@ -20,11 +20,14 @@ function draw(){
 }
 
 function Puck(){
+    this.reset = function(){
+      this.xspeed = 0;
+      this.yspeed = 0;
+      this.x = 300;
+      this.y = 200;
+  }
   this.r = 12;
-  this.x = 300;
-  this.y = 200;
-  this.xspeed = 0;
-  this.yspeed = 0;
+  this.reset();
   
   // Updates the Position of the puck based on its speed
   this.update = function(){
@@ -35,20 +38,15 @@ function Puck(){
   this.show = function(){
     ellipse(this.x,this.y,2*this.r,2*this.r);
   }
+
   // Checks if a player has won
   this.xEdges = function(){
     if(this.x > 600){
       console.log('Player 1 Wins!');
-      this.x = 300;
-      this.y = 200;
-      this.xspeed = 0;
-      this.yspeed = 0;
+      this.reset();
     } else if(this.x < 0){
       console.log('Player 2 Wins!');
-      this.x = 300;
-      this.y = 200;      
-      this.xspeed = 0;
-      this.yspeed = 0;
+      this.reset();     
     }
   }
   // If the puck hits the top or bottom edge, bounce off of it
@@ -57,30 +55,27 @@ function Puck(){
       this.yspeed = this.yspeed * -1;
     }
   }
+  this.addMomentum = function(){
+      //If the paddle was moving
+      if(PaddleIsMoving == 1){
+        // Add half of the velocity of the paddle to the Puck's Vertical motion
+        this.yspeed += 3.5;
+      } else if (PaddleIsMoving == -1){
+        this.yspeed += -3.5;
+      }
+  }
   // Check if the Puck has hit a paddle and if so, change its speed and yposition accordingly
   this.checkPaddles = function(){
     // If the Puck collides with the left paddle
     if(this.x < 30 + this.r && this.y > LeftPaddle.PaddleHeight && this.y < LeftPaddle.PaddleHeight + 80){
       // Rebound off of it
       this.xspeed = this.xspeed * -1;
-      // And the paddle was moving
-      if(PaddleIsMoving == 1){
-        // Add half of the velocity of the paddle to the Puck's Vertical motion
-        this.yspeed += 3.5;
-      } else if (PaddleIsMoving == -1){
-        this.yspeed += -3.5;
-      }
+      this.addMomentum();
     // If the Puck collides with the right paddle
     } else if(this.x > 570 - this.r && this.y > RightPaddle.PaddleHeight && this.y < RightPaddle.PaddleHeight + 80){
       // Rebound from it
       this.xspeed = this.xspeed * -1;
-      // And the paddle was moving
-      if(PaddleIsMoving == 1){
-        // Add half of the velocity of the paddle to the Puck's Vertical motion
-        this.yspeed += 3.5;
-      } else if (PaddleIsMoving == -1){
-        this.yspeed += -3.5;
-      }
+      this.addMomentum();
     }
   }
 }
