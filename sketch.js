@@ -20,11 +20,11 @@ function draw(){
 }
 
 function Puck(){
-    this.reset = function(){
-      this.xspeed = 0;
-      this.yspeed = 0;
-      this.x = 300;
-      this.y = 200;
+  this.reset = function(){
+    this.xspeed = 0;
+    this.yspeed = 0;
+    this.x = 300;
+    this.y = 200;
   }
   this.r = 12;
   this.reset();
@@ -56,13 +56,13 @@ function Puck(){
     }
   }
   this.addMomentum = function(){
-      //If the paddle was moving
-      if(PaddleIsMoving == 1){
-        // Add half of the velocity of the paddle to the Puck's Vertical motion
-        this.yspeed += 3.5;
-      } else if (PaddleIsMoving == -1){
-        this.yspeed += -3.5;
-      }
+    //If the paddle was moving
+    if(PaddleIsMoving == 1){
+      // Add half of the velocity of the paddle to the Puck's Vertical motion
+      this.yspeed += 3.5;
+    } else if (PaddleIsMoving == -1){
+      this.yspeed += -3.5;
+    }
   }
   // Check if the Puck has hit a paddle and if so, change its speed and yposition accordingly
   this.checkPaddles = function(){
@@ -81,47 +81,48 @@ function Puck(){
 }
 // Defines a paddle object
 function Paddle(){
-    this.ychange = 0;
-    this.PaddleHeight = 180;
-    // Updates the position of the paddle
-    this.update = function(){
-        this.PaddleHeight += this.ychange;
-        if(this.PaddleHeight < 0 ){
-          this.PaddleHeight = 0;
-        }
-        if(this.PaddleHeight > 320){
-          this.PaddleHeight = 320;
-        }
+  this.ychange = 0;
+  this.PaddleHeight = 180;
+  // Updates the position of the paddle
+  this.update = function(){
+      this.PaddleHeight += this.ychange;
+      if(this.PaddleHeight < 0 ){
+        this.PaddleHeight = 0;
       }
-    // Draws the paddle on a given side
-    this.draw = function(side){
-        rect(side,this.PaddleHeight,20,80);
+      if(this.PaddleHeight > 320){
+        this.PaddleHeight = 320;
+      }
     }
-    // Moves the paddle by a given value
-    this.move = function(value){
-        this.ychange = value;
-    }
+  // Draws the paddle on a given side
+  this.draw = function(side){
+    rect(side,this.PaddleHeight,20,80);
+  }
+  // Moves the paddle by a given value
+  this.move = function(value){
+      this.ychange = value;
+  }
 }
-
+function moveUp(Paddle){
+  Paddle.move(-7);
+  PaddleIsMoving = -1;
+}
+function moveDown(Paddle){
+  Paddle.move(7);
+  PaddleIsMoving = -1;
+}
 // Defines the controls for the Paddles
 function keyPressed(){
-  // If the paddle is moving up
   if(keyCode == UP_ARROW){
-    RightPaddle.move(-7);
-    PaddleIsMoving = -1;
+    moveUp(RightPaddle);
   }
   if(keyCode == SHIFT){
-    LeftPaddle.move(-7);
-    PaddleIsMoving = -1;
+    moveUp(LeftPaddle);
   }
-  // If the paddle is moving down
   if(keyCode == DOWN_ARROW){
-    RightPaddle.move(7);
-    PaddleIsMoving = 1;
+    moveDown(RightPaddle);
   }
   if(keyCode == CONTROL){
-    LeftPaddle.move(7);
-    PaddleIsMoving = 1;
+    moveDown(LeftPaddle);
   }
   // Start the game
   if(key == ' '){
