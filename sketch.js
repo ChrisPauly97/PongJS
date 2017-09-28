@@ -1,4 +1,5 @@
 var PaddleIsMoving = 0;
+var slow= false;
 function setup() {
   createCanvas(600,400);
   RightPaddle = new Paddle();
@@ -20,19 +21,23 @@ function draw(){
 }
 
 function Puck(){
+  this.r = 12;
   this.reset = function(){
     this.xspeed = 0;
     this.yspeed = 0;
     this.x = 300;
     this.y = 200;
   }
-  this.r = 12;
   this.reset();
-  
   // Updates the Position of the puck based on its speed
   this.update = function(){
-    this.x = this.x + this.xspeed;
-    this.y = this.y + this.yspeed;
+    if(slow){
+      this.x = this.x + this.xspeed/2;
+      this.y = this.y + this.yspeed/2;
+    }else{
+      this.x = this.x + this.xspeed;
+      this.y = this.y + this.yspeed;
+    }
   }
   // Draws the puck at the position defined in update
   this.show = function(){
@@ -52,6 +57,7 @@ function Puck(){
   // If the puck hits the top or bottom edge, bounce off of it
   this.yEdges = function(){
     if(this.y < 0 || this.y > 400){
+      fill(random(0,255),random(0,255),random(0,255));
       this.yspeed = this.yspeed * -1;
     }
   }
@@ -67,12 +73,16 @@ function Puck(){
   // Check if the Puck has hit a paddle and if so, change its speed and yposition accordingly
   this.checkPaddles = function(){
     // If the Puck collides with the left paddle
-    if(this.x < 30 + this.r && this.y > LeftPaddle.PaddleHeight && this.y < LeftPaddle.PaddleHeight + 80){
+    if(this.x < 30 + this.r 
+      && this.y > LeftPaddle.PaddleHeight 
+      && this.y < LeftPaddle.PaddleHeight + 80){
       // Rebound off of it
       this.xspeed = this.xspeed * -1;
       this.addMomentum();
     // If the Puck collides with the right paddle
-    } else if(this.x > 570 - this.r && this.y > RightPaddle.PaddleHeight && this.y < RightPaddle.PaddleHeight + 80){
+    } else if(this.x > 570 - this.r 
+      && this.y > RightPaddle.PaddleHeight 
+      && this.y < RightPaddle.PaddleHeight + 80){
       // Rebound from it
       this.xspeed = this.xspeed * -1;
       this.addMomentum();
@@ -102,38 +112,48 @@ function Paddle(){
       this.ychange = value;
   }
 }
-function moveUp(Paddle){
-  Paddle.move(-7);
-  PaddleIsMoving = -1;
-}
-function moveDown(Paddle){
-  Paddle.move(7);
-  PaddleIsMoving = -1;
-}
-// Defines the controls for the Paddles
+
+upPressed = false;
+downPressed = false;
+shiftPressed = false;
+controlPressed = false;
+
 function keyPressed(){
   if(keyCode == UP_ARROW){
-    moveUp(RightPaddle);
+    upPressed = true;
+    RightPaddle.move(-7);
   }
   if(keyCode == SHIFT){
-    moveUp(LeftPaddle);
+    shiftPressed = true;
+    LeftPaddle.move(-7);
   }
   if(keyCode == DOWN_ARROW){
-    moveDown(RightPaddle);
+    downPressed = true;
+    RightPaddle.move(7);
   }
   if(keyCode == CONTROL){
-    moveDown(LeftPaddle);
-  }
-  // Start the game
-  if(key == ' '){
-    Puck.xspeed = 4;
-    Puck.yspeed = 0;
+    controlPressed = true;
+    LeftPaddle.move(7);
   }
 }
 //Function which means the paddles stop when the keys are released
-// **** THERE IS AN ISSUE HERE ****
-//Whenever any key is released it stops the paddles.
 function keyReleased(){
-  LeftPaddle.move(0);
-  RightPaddle.move(0);
+  if(keyCode == UP_ARROW){
+    upPressed = false;
+  }  
+  if(keyCode == DOWN_ARROW){
+    downPressed = false;
+  }
+  if(upPressed === false && downPressed === false){
+    RightPaddle.move(0);
+  }
+  if(keyCode == SHIFT){
+    shiftPressed = false;
+  }
+  if(keyCode == CONTROL){
+    controlPressed = false;
+  }
+  if(controlPressed === false && shiftPressed === false){
+    LeftPaddle.move(0);
+  }
 }
