@@ -131,6 +131,8 @@ function keyPressed(){
   }
 }
 //Function which means the paddles stop when the keys are released
+// **** THERE IS AN ISSUE HERE ****
+//Whenever any key is released it stops the paddles.
 function keyReleased(){
   LeftPaddle.move(0);
   RightPaddle.move(0);
