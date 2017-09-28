@@ -1,5 +1,5 @@
 var PaddleIsMoving = 0;
-var slow= false;
+var slow = false;
 function setup() {
   createCanvas(600,400);
   RightPaddle = new Paddle();
@@ -8,7 +8,16 @@ function setup() {
 }
 
 function draw(){
-  background(0);  
+  background(0);
+  // fill(255);
+  // if(random(0,1)>0.1){
+  //   fill(0);
+  // }
+  if(millis() > 20000 && millis() < 25000){
+    slow = true;
+  }else{
+    slow = false;
+  }
   Puck.update();
   Puck.show();
   Puck.checkPaddles();
@@ -57,7 +66,6 @@ function Puck(){
   // If the puck hits the top or bottom edge, bounce off of it
   this.yEdges = function(){
     if(this.y < 0 || this.y > 400){
-      fill(random(0,255),random(0,255),random(0,255));
       this.yspeed = this.yspeed * -1;
     }
   }
@@ -65,9 +73,9 @@ function Puck(){
     //If the paddle was moving
     if(PaddleIsMoving == 1){
       // Add half of the velocity of the paddle to the Puck's Vertical motion
-      this.yspeed += 3.5;
+      this.yspeed += 7;
     } else if (PaddleIsMoving == -1){
-      this.yspeed += -3.5;
+      this.yspeed += -7;
     }
   }
   // Check if the Puck has hit a paddle and if so, change its speed and yposition accordingly
@@ -121,19 +129,39 @@ controlPressed = false;
 function keyPressed(){
   if(keyCode == UP_ARROW){
     upPressed = true;
-    RightPaddle.move(-7);
+    if(slow){
+      RightPaddle.move(-2);
+    }else{
+     RightPaddle.move(-7);
+    }
   }
   if(keyCode == SHIFT){
     shiftPressed = true;
-    LeftPaddle.move(-7);
+    if(slow){
+      LeftPaddle.move(-2);
+    }else{
+      LeftPaddle.move(-7);
+    }
   }
   if(keyCode == DOWN_ARROW){
     downPressed = true;
-    RightPaddle.move(7);
+    if(slow){
+      RightPaddle.move(2);
+    }else{
+      RightPaddle.move(7);
+    }
   }
   if(keyCode == CONTROL){
     controlPressed = true;
-    LeftPaddle.move(7);
+    if(slow){
+      LeftPaddle.move(2);
+    }else{
+      LeftPaddle.move(7);
+    }
+  }
+  if(key == ' '){
+    Puck.yspeed = 2;
+    Puck.xspeed = 4;
   }
 }
 //Function which means the paddles stop when the keys are released
