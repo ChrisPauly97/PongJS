@@ -33,11 +33,12 @@ function draw() {
 	}
 
 	// Modes
-	invertMode();
-	Puck.flickerMode();
-	Puck.slowMode();
+	//invertMode();
+	//Puck.flickerMode();
+	//Puck.slowMode();
 
 	// Puck Functions
+	Puck.show();
 	Puck.update();
 	Puck.checkPaddles();
 	Puck.yEdges();
@@ -116,8 +117,8 @@ function keyPressed() {
 		}
 	}
 	if (key == ' ') {
-		Puck.yspeed = 0;
-		Puck.xspeed = 4;
+		Puck.yspeed = random(-4,4);
+		Puck.xspeed = 2;
 		gameStart = true;
 	}
 }

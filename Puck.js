@@ -45,8 +45,6 @@ class Puck{
 		}
 	}
 
-	// Updates the Position of the puck
-	// based on its speed
 	update() {
 		if (slow) {
 			this.x = this.x + this.xspeed * 0.2;
@@ -57,7 +55,6 @@ class Puck{
 		}
 	}
 
-	// Checks if a player has won
 	xEdges() {
 		if (this.x > width) {
 			p1Score++;
@@ -68,7 +65,6 @@ class Puck{
 		}
 	}
 
-	// If the puck hits the top or bottom edge, bounce off of it
 	yEdges() {
 		if (this.y - this.r < 0 || this.y + this.r > height) {
 			this.yspeed = this.yspeed * -1;
@@ -76,35 +72,24 @@ class Puck{
 	}
 
 	addMomentum() {
-		//If the paddle was moving
-		if (downPressed === true || controlPressed === true && this.yspeed < 4) {
-			// Add half of the velocity of the paddle to the Puck's Vertical motion
+		if (downPressed === true || controlPressed === true && this.yspeed < 5) {
 			this.yspeed += 3;
-		} else if (upPressed === true || shiftPressed === true && this.yspeed < 4) {
+		} else if (upPressed === true || shiftPressed === true && this.yspeed < 5) {
 			this.yspeed += -3;
 		}
 	}
-	// Check if the Puck has hit a paddle and if so, change its speed and yposition accordingly
-	checkPaddles() {
-		// If the Puck collides with the left paddle
-		if (this.x - this.r < LeftPaddle.x + LeftPaddle.Pwidth/2 + this.r &&
-			this.y > LeftPaddle.y &&
-			this.y < LeftPaddle.y + 80) {
-			  if(this.x - this.r < LeftPaddle.x){
-			    // Rebound off of it
-			    this.xspeed = this.xspeed * -1;
-			    this.addMomentum();
-			  }
 
-			// If the Puck collides with the right paddle
-		} else if ((this.x > 585 - this.r &&
+	checkPaddles() {
+		if (this.x - this.r -5 < LeftPaddle.x + LeftPaddle.Pwidth/2 &&
+			this.y > LeftPaddle.y &&
+			this.y < LeftPaddle.y + 80){
+			 this.xspeed = this.xspeed * -1;
+			 this.addMomentum();
+		} else if (this.x  + this.r -5 > RightPaddle.x - RightPaddle.Pwidth/2 &&
 				this.y > RightPaddle.y &&
-				this.y < RightPaddle.y + 80)) {
-			  if(this.x + this.r > RightPaddle.x){
-			    // Rebound off of it
+				this.y < RightPaddle.y + 80) {
 			    this.xspeed = this.xspeed * -1;
 			    this.addMomentum();
-			  }
+			 }
 		}
 	}
-}
