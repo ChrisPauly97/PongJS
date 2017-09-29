@@ -28,7 +28,7 @@ class Puck{
 
 	// Puck Modes
 	slowMode() {
-		if (count >= random(0, 150) && count <= random(150, 300)) {
+		if (count >= 200 && count <= 400) {
 			slow = true;
 		} else {
 			slow = false;
@@ -36,12 +36,12 @@ class Puck{
 	}
 
 	flickerMode() {
-		if (count >= random(0, 500) && count <= random(500, 700)) {
+		if (count >= 400 && count <= 700) {
 			if (random(0, 1) > 0.9 && gameStart === true) {
-				Puck.show(rand1, rand2, rand3);
+				this.show(rand1, rand2, rand3);
 			}
 		} else {
-			Puck.show(rand1, rand2, rand3);
+		  this.show(rand1, rand2, rand3);
 		}
 	}
 
@@ -87,7 +87,7 @@ class Puck{
 	// Check if the Puck has hit a paddle and if so, change its speed and yposition accordingly
 	checkPaddles() {
 		// If the Puck collides with the left paddle
-		if (this.x < 15 + this.r &&
+		if (this.x - this.r < LeftPaddle.x + LeftPaddle.Pwidth/2 + this.r &&
 			this.y > LeftPaddle.y &&
 			this.y < LeftPaddle.y + 80) {
 			  if(this.x - this.r < LeftPaddle.x){

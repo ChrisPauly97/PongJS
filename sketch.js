@@ -32,13 +32,12 @@ function draw() {
 		Puck.show(rand1,rand2,rand3);
 	}
 
-	//Modes
-// 	invertMode();
-// 	Puck.flickerMode();
-// 	Puck.slowMode();
+	// Modes
+	invertMode();
+	Puck.flickerMode();
+	Puck.slowMode();
 
 	// Puck Functions
-	Puck.show(rand1,rand2,rand3);
 	Puck.update();
 	Puck.checkPaddles();
 	Puck.yEdges();
@@ -145,7 +144,7 @@ function keyReleased() {
 }
 
 function invertMode() {
-	if (count > random(1000, 1200) && count < random(1200, 1500)) {
+	if (count > 700 && count < 1000) {
 		invert = true;
 	} else {
 		invert = false;
