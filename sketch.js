@@ -1,5 +1,6 @@
 var PaddleIsMoving = 0;
 var slow = false;
+var invert = false;
 function setup() {
   createCanvas(600,400);
   RightPaddle = new Paddle();
@@ -9,14 +10,19 @@ function setup() {
 
 function draw(){
   background(0);
-  // fill(255);
-  // if(random(0,1)>0.1){
-  //   fill(0);
-  // }
-  if(millis() > 20000 && millis() < 25000){
+  fill(255);
+  if(random(0,1)>0.1){
+    fill(0);
+  }
+  if(millis() > random(10000,15000) && millis() < random(15000,20000)){
     slow = true;
   }else{
-    slow = false;
+    slow =false;
+  }
+  if(millis() > random(20000,25000)&& millis() < random(28000,30000)){
+    invert = true;
+  }else{
+    invert =false;
   }
   Puck.update();
   Puck.show();
@@ -71,11 +77,11 @@ function Puck(){
   }
   this.addMomentum = function(){
     //If the paddle was moving
-    if(PaddleIsMoving == 1){
+    if(PaddleIsMoving == 1 && this.yspeed < 7){
       // Add half of the velocity of the paddle to the Puck's Vertical motion
-      this.yspeed += 7;
-    } else if (PaddleIsMoving == -1){
-      this.yspeed += -7;
+      this.yspeed += 3.5;
+    } else if (PaddleIsMoving == -1 && this.yspeed < 7){
+      this.yspeed += -3.5;
     }
   }
   // Check if the Puck has hit a paddle and if so, change its speed and yposition accordingly
@@ -128,33 +134,45 @@ controlPressed = false;
 
 function keyPressed(){
   if(keyCode == UP_ARROW){
+    PaddleIsMoving = -1;
     upPressed = true;
     if(slow){
       RightPaddle.move(-2);
-    }else{
+    } else if(invert){
+      RightPaddle.move(7);
+    } else{
      RightPaddle.move(-7);
     }
   }
   if(keyCode == SHIFT){
+    PaddleIsMoving = -1;
     shiftPressed = true;
     if(slow){
       LeftPaddle.move(-2);
+    }else if(invert){
+      LeftPaddle.move(7);
     }else{
       LeftPaddle.move(-7);
     }
   }
   if(keyCode == DOWN_ARROW){
+    PaddleIsMoving = 1;
     downPressed = true;
     if(slow){
       RightPaddle.move(2);
+    }else if(invert){
+      RightPaddle.move(-7);
     }else{
       RightPaddle.move(7);
     }
   }
   if(keyCode == CONTROL){
+    PaddleIsMoving = 1;
     controlPressed = true;
     if(slow){
       LeftPaddle.move(2);
+    }else if(invert){
+      LeftPaddle.move(-7);
     }else{
       LeftPaddle.move(7);
     }
