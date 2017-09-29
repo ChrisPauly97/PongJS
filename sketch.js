@@ -1,6 +1,12 @@
 var PaddleIsMoving = 0;
 var slow = false;
 var invert = false;
+var gameStart = false;
+var count = 0;
+var rand1 = 0;
+var rand2 = 0;
+var rand3 = 0;
+
 function setup() {
   createCanvas(600,400);
   RightPaddle = new Paddle();
@@ -10,22 +16,32 @@ function setup() {
 
 function draw(){
   background(0);
-  fill(255);
-  if(random(0,1)>0.1){
-    fill(0);
-  }
-  if(millis() > random(10000,15000) && millis() < random(15000,20000)){
-    slow = true;
+  var i = 0;
+  // 50% of the time if the
+  // Allow the ball to disappear
+  if(count >= 10 && count <= 300){
+    if(random(0,1) > 0.9 && gameStart === true){
+      Puck.show(rand1,rand2,rand3);
+    }
   }else{
-    slow =false;
+    Puck.show(rand1,rand2,rand3);
   }
-  if(millis() > random(20000,25000)&& millis() < random(28000,30000)){
-    invert = true;
-  }else{
-    invert =false;
+  if (gameStart === false){
+    Puck.show(rand1,rand2,rand3); 
   }
+
+  // if(count >= 150 && count <= 300){
+  // slow = true;
+  // }else{
+  //   slow =false;
+  // }
+  // if(count > random(1000,1200)&& count < random(1200,1500)){
+  //   count = 0;
+  //   invert = true;
+  // }else{
+  //   invert =false;
+  // }
   Puck.update();
-  Puck.show();
   Puck.checkPaddles();
   Puck.yEdges();
   Puck.xEdges();
@@ -33,30 +49,45 @@ function draw(){
   LeftPaddle.update();
   RightPaddle.draw(570);
   LeftPaddle.draw(10);
+  count++;
 }
 
 function Puck(){
   this.r = 12;
-  this.reset = function(){
+  this.reset = function(){ 
+    rand1 = random(0,255);
+    rand2 = random(0,255);
+    rand3 = random(0,255);
     this.xspeed = 0;
     this.yspeed = 0;
     this.x = 300;
     this.y = 200;
+    gameStart = false;
   }
   this.reset();
   // Updates the Position of the puck based on its speed
   this.update = function(){
     if(slow){
-      this.x = this.x + this.xspeed/2;
-      this.y = this.y + this.yspeed/2;
+      this.x = this.x + this.xspeed * 0.2;
+      this.y = this.y + this.yspeed * 0.2;
     }else{
       this.x = this.x + this.xspeed;
       this.y = this.y + this.yspeed;
     }
   }
   // Draws the puck at the position defined in update
-  this.show = function(){
-    ellipse(this.x,this.y,2*this.r,2*this.r);
+  this.show = function(rand1,rand2,rand3){
+    if(gameStart === false){
+      push();
+      fill(rand1,rand2,rand3);
+      ellipse(this.x,this.y,2*this.r,2*this.r);
+      pop();
+    }else{
+      push();
+      fill(rand1,rand2,rand3);
+      ellipse(this.x,this.y,2*this.r,2*this.r);
+      pop();
+    }
   }
 
   // Checks if a player has won
@@ -77,10 +108,10 @@ function Puck(){
   }
   this.addMomentum = function(){
     //If the paddle was moving
-    if(PaddleIsMoving == 1 && this.yspeed < 7){
+    if(PaddleIsMoving == 1 && this.yspeed < 4){
       // Add half of the velocity of the paddle to the Puck's Vertical motion
       this.yspeed += 3.5;
-    } else if (PaddleIsMoving == -1 && this.yspeed < 7){
+    } else if (PaddleIsMoving == -1 && this.yspeed < 4){
       this.yspeed += -3.5;
     }
   }
@@ -119,7 +150,10 @@ function Paddle(){
     }
   // Draws the paddle on a given side
   this.draw = function(side){
+    push();
+    fill(255);
     rect(side,this.PaddleHeight,20,80);
+    pop();
   }
   // Moves the paddle by a given value
   this.move = function(value){
@@ -180,6 +214,7 @@ function keyPressed(){
   if(key == ' '){
     Puck.yspeed = 2;
     Puck.xspeed = 4;
+    gameStart = true;
   }
 }
 //Function which means the paddles stop when the keys are released
