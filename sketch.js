@@ -1,29 +1,24 @@
 "use strict";
-var PaddleIsMoving = 0;
 var slow = false;
 var invert = false;
 var gameStart = false;
-var count = 0;
-var p1Score = 0;
-var p2Score = 0;
-var rand1;
-var rand2;
-var rand3;
-var i = 0;
+var count = 0,i = 0,PaddleIsMoving = 0;
+var p1Score = 0, p2Score = 0;
+var rand1,rand2,rand3;
 var RightPaddle;
 var LeftPaddle;
 var width = 600;
 var height = 400;
 
 function setup() {
-
-	createCanvas(600, 400);
+  createCanvas(600, 400);
 	Puck = new Puck(12, 0, 0, width/2, height/2);
   RightPaddle = new Paddle(0,585,180,10,80);
 	LeftPaddle = new Paddle(0,5,180,10,80);
 	Puck.reset();
 }
 function draw() {
+  console.log(count);
 	background(0);
 	Scores();
 	// If the game is not running
@@ -63,93 +58,15 @@ function Scores() {
 		text("Player 1 Score: " + p1Score + "\n" + "Player 2 Score: " + p2Score, 210, 30);
 	pop();
 }
-
-//All General control functions Beyond this point
-var upPressed = false;
-var downPressed = false;
-var shiftPressed = false;
-var controlPressed = false;
-
-function keyPressed() {
-	if (keyCode == UP_ARROW) {
-		PaddleIsMoving = -1;
-		upPressed = true;
-		if (slow) {
-			RightPaddle.move(-2);
-		} else if (invert) {
-			RightPaddle.move(7);
-		} else {
-			RightPaddle.move(-7);
-		}
-	}
-	if (keyCode == SHIFT) {
-		PaddleIsMoving = -1;
-		shiftPressed = true;
-		if (slow) {
-			LeftPaddle.move(-2);
-		} else if (invert) {
-			LeftPaddle.move(7);
-		} else {
-			LeftPaddle.move(-7);
-		}
-	}
-	if (keyCode == DOWN_ARROW) {
-		PaddleIsMoving = 1;
-		downPressed = true;
-		if (slow) {
-			RightPaddle.move(2);
-		} else if (invert) {
-			RightPaddle.move(-7);
-		} else {
-			RightPaddle.move(7);
-		}
-	}
-	if (keyCode == CONTROL) {
-		PaddleIsMoving = 1;
-		controlPressed = true;
-		if (slow) {
-			LeftPaddle.move(2);
-		} else if (invert) {
-			LeftPaddle.move(-7);
-		} else {
-			LeftPaddle.move(7);
-		}
-	}
-	if (key == ' ') {
-		Puck.yspeed = random(-4,4);
-		Puck.xspeed = 4;
-		gameStart = true;
-	}
+function drawMode(txt){
+  push();
+  fill(255);
+  textSize(24);
+  text(txt,230, 200);
 }
-//Function which means the paddles stop when the keys are released
-function keyReleased() {
-	if (keyCode == UP_ARROW) {
-		upPressed = false;
-	}
-	if (keyCode == DOWN_ARROW) {
-		downPressed = false;
-	}
-	if (upPressed === false && downPressed === false) {
-		RightPaddle.move(0);
-	}
-	if (keyCode == SHIFT) {
-		shiftPressed = false;
-	}
-	if (keyCode == CONTROL) {
-		controlPressed = false;
-	}
-	if (controlPressed === false && shiftPressed === false) {
-		LeftPaddle.move(0);
-	}
-}
-
 function invertMode() {
   if (count >= 600 && count <= 1000){
-    push();
-	  fill(255);
-	  textSize(24);
-  	text("Inverted Controls",230, 200);
-    pop();
+    drawMode("Invert Mode");
   }
 	if (count > 700 && count < 1000) {
 		invert = true;

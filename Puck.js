@@ -25,15 +25,10 @@ class Puck{
 		this.y = height/2;
 		gameStart = false;
 	}
-
 	// Puck Modes
 	slowMode() {
 	  if (count >= 150 && count <= 350){
-	    push();
-		  fill(255);
-		  textSize(24);
-		  text("Slow Mode",250, 200);
-	    pop();
+	    drawMode("Slow Mode");
 	  }
 		if (count >= 200 && count <= 350) {
 			slow = true;
@@ -41,24 +36,18 @@ class Puck{
 			slow = false;
 		}
 	}
-
 	flickerMode() {
 		if (count >= 400 && count <= 700) {
 			if (random(0, 1) > 0.85 && gameStart === true) {
 				this.show(rand1, rand2, rand3);
 			}
 		}else if(count >= 350 && count <= 700){
-		  push();
-		  fill(255);
-		  textSize(24);
-		  text("Flicker Mode",250, 200);
-	    pop();
+      drawMode("Flicker Mode");
 		}
 		else {
 		  this.show(rand1, rand2, rand3);
 		}
 	}
-
 	update() {
 		if (slow) {
 			this.x = this.x + this.xspeed * 0.2;
@@ -68,7 +57,6 @@ class Puck{
 			this.y = this.y + this.yspeed;
 		}
 	}
-
 	xEdges() {
 		if (this.x > width) {
 			p1Score++;
@@ -78,13 +66,11 @@ class Puck{
 			this.reset();
 		}
 	}
-
 	yEdges() {
 		if (this.y - this.r < 0 || this.y + this.r > height) {
 			this.yspeed = this.yspeed * -1;
 		}
 	}
-
 	addMomentum() {
 		if (downPressed === true || controlPressed === true && this.yspeed < 5) {
 			this.yspeed += 3;
@@ -92,7 +78,6 @@ class Puck{
 			this.yspeed += -3;
 		}
 	}
-
 	checkPaddles() {
 		if (this.x - this.r -5 < LeftPaddle.x + LeftPaddle.Pwidth/2 &&
 			this.y > LeftPaddle.y &&
