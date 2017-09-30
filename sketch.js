@@ -33,12 +33,11 @@ function draw() {
 	}
 
 	// Modes
-	//invertMode();
-	//Puck.flickerMode();
-	//Puck.slowMode();
+	invertMode();
+	Puck.flickerMode();
+	Puck.slowMode();
 
 	// Puck Functions
-	Puck.show();
 	Puck.update();
 	Puck.checkPaddles();
 	Puck.yEdges();
@@ -50,7 +49,7 @@ function draw() {
 	RightPaddle.draw();
 	LeftPaddle.draw();
 
-	if (count > 2000) {
+	if (count > 1500) {
 		count = 0;
 	} else {
 		count++;
@@ -118,7 +117,7 @@ function keyPressed() {
 	}
 	if (key == ' ') {
 		Puck.yspeed = random(-4,4);
-		Puck.xspeed = 2;
+		Puck.xspeed = 4;
 		gameStart = true;
 	}
 }
@@ -145,6 +144,13 @@ function keyReleased() {
 }
 
 function invertMode() {
+  if (count >= 600 && count <= 1000){
+    push();
+	  fill(255);
+	  textSize(24);
+  	text("Inverted Controls",230, 200);
+    pop();
+  }
 	if (count > 700 && count < 1000) {
 		invert = true;
 	} else {

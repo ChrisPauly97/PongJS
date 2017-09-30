@@ -28,7 +28,14 @@ class Puck{
 
 	// Puck Modes
 	slowMode() {
-		if (count >= 200 && count <= 400) {
+	  if (count >= 150 && count <= 350){
+	    push();
+		  fill(255);
+		  textSize(24);
+		  text("Slow Mode",250, 200);
+	    pop();
+	  }
+		if (count >= 200 && count <= 350) {
 			slow = true;
 		} else {
 			slow = false;
@@ -37,10 +44,17 @@ class Puck{
 
 	flickerMode() {
 		if (count >= 400 && count <= 700) {
-			if (random(0, 1) > 0.9 && gameStart === true) {
+			if (random(0, 1) > 0.85 && gameStart === true) {
 				this.show(rand1, rand2, rand3);
 			}
-		} else {
+		}else if(count >= 350 && count <= 700){
+		  push();
+		  fill(255);
+		  textSize(24);
+		  text("Flicker Mode",250, 200);
+	    pop();
+		}
+		else {
 		  this.show(rand1, rand2, rand3);
 		}
 	}
