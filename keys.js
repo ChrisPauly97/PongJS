@@ -16,7 +16,7 @@ function keyPressed() {
 			RightPaddle.move(-7);
 		}
 	}
-	if (keyCode == SHIFT) {
+	if (keyCode == 87) {
 		PaddleIsMoving = -1;
 		shiftPressed = true;
 		if (slow) {
@@ -38,7 +38,7 @@ function keyPressed() {
 			RightPaddle.move(7);
 		}
 	}
-	if (keyCode == CONTROL) {
+	if (keyCode == 83) {
 		PaddleIsMoving = 1;
 		controlPressed = true;
 		if (slow) {
@@ -50,8 +50,8 @@ function keyPressed() {
 		}
 	}
 	if (key == ' ') {
-		Puck.yspeed = random(-4,4);
-		Puck.xspeed = 4;
+		Pucks[0].yspeed = 0;//random(-4,4);
+		Pucks[0].xspeed = 4;
 		gameStart = true;
 	}
 }
@@ -66,10 +66,10 @@ function keyReleased() {
 	if (upPressed === false && downPressed === false) {
 		RightPaddle.move(0);
 	}
-	if (keyCode == SHIFT) {
+	if (keyCode == 87) {
 		shiftPressed = false;
 	}
-	if (keyCode == CONTROL) {
+	if (keyCode == 83) {
 		controlPressed = false;
 	}
 	if (controlPressed === false && shiftPressed === false) {

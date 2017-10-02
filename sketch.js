@@ -7,36 +7,44 @@ var p1Score = 0, p2Score = 0;
 var rand1,rand2,rand3;
 var RightPaddle;
 var LeftPaddle;
+var Pucks = [];
 var width = 600;
 var height = 400;
 
 function setup() {
   createCanvas(600, 400);
-	Puck = new Puck(12, 0, 0, width/2, height/2);
+	Pucks.push(new Puck(12, 0, 0, width/2, height/2));
   RightPaddle = new Paddle(0,585,180,10,80);
 	LeftPaddle = new Paddle(0,5,180,10,80);
-	Puck.reset();
+	for(i = 0;i < Pucks.length; i++){
+	  Pucks[i].reset();
+	}
+}
+function createPuck(Paddle){
+  Pucks.push(new Puck(12,-10,0,Paddle.x -Paddle.Pwidth/2 - 12,Paddle.y +40))
 }
 function draw() {
-  console.log(count);
 	background(0);
+	drawControls();
 	Scores();
 	// If the game is not running
 	//draw the puck in the center
 	if (gameStart === false) {
-		Puck.show(rand1,rand2,rand3);
+		Pucks[0].show(rand1,rand2,rand3);
 	}
 
 	// Modes
-	invertMode();
-	Puck.flickerMode();
-	Puck.slowMode();
-
-	// Puck Functions
-	Puck.update();
-	Puck.checkPaddles();
-	Puck.yEdges();
-	Puck.xEdges();
+	//invertMode();
+  for(i = 0; i< Pucks.length; i++){
+    //Pucks[i].flickerMode();
+	  //Pucks[i].slowMode();
+  	// Puck Functions
+  	Pucks[i].update();
+  	Pucks[i].checkPaddles();
+  	Pucks[i].yEdges();
+  	Pucks[i].xEdges();
+  	Pucks[i].show();
+  }
 
   //Paddle Functions
 	RightPaddle.update();
@@ -50,7 +58,16 @@ function draw() {
 		count++;
 	}
 }
-
+function drawControls(){
+  push();
+    fill(255);
+    textSize(24);
+    text("w",10,15);
+    text("s",10,390);
+    text("↑",590,15);
+    text("↓",590,395);
+  pop();
+}
 function Scores() {
 	push();
 		fill(255);

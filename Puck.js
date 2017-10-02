@@ -84,11 +84,17 @@ class Puck{
 			this.y < LeftPaddle.y + 80){
 			 this.xspeed = this.xspeed * -1;
 			 this.addMomentum();
-		} else if (this.x  + this.r -5 > RightPaddle.x - RightPaddle.Pwidth/2 &&
-				this.y > RightPaddle.y &&
-				this.y < RightPaddle.y + 80) {
-			    this.xspeed = this.xspeed * -1;
-			    this.addMomentum();
+			 if(random(0,1) > 0.8){
+			  createPuck(LeftPaddle);
 			 }
+		} else if (this.x  + this.r -5 > RightPaddle.x - RightPaddle.Pwidth/2 &&
+			this.y > RightPaddle.y &&
+			this.y < RightPaddle.y + 80) {
+			  this.xspeed = this.xspeed * -1;
+			  this.addMomentum();
+			  if(random(0,1) > 0.8){
+          createPuck(RightPaddle);
+			  }
+			}
 		}
 	}
