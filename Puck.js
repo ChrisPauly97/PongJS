@@ -1,5 +1,6 @@
 "use strict";
 class Puck{
+
   constructor(r, xspeed, yspeed, x, y){
     this.r = r;
     this.xspeed = xspeed;
@@ -7,6 +8,7 @@ class Puck{
     this.x = x;
     this.y = y;
   }
+
   // Draws the puck at the position defined in update
 	show(rand1, rand2, rand3) {
 	  push();
@@ -19,7 +21,7 @@ class Puck{
 		rand1 = random(0, 255);
 		rand2 = random(0, 255);
 		rand3 = random(0, 255);
-		this.xspeed = 0;
+		this.xspeed = 4;
 		this.yspeed = 0;
 		this.x = width/2;
 		this.y = height/2;
@@ -60,10 +62,18 @@ class Puck{
 	xEdges() {
 		if (this.x > width) {
 			p1Score++;
-			this.reset();
+			if(Pucks.length > 1){
+			  Pucks.pop(this);
+			}else{
+			  this.reset();
+			}
 		} else if (this.x < 0) {
 			p2Score++;
-			this.reset();
+			if(Pucks.length > 1){
+			  Pucks.pop(this);
+			}else{
+			  this.reset();
+			}
 		}
 	}
 	yEdges() {
@@ -72,10 +82,10 @@ class Puck{
 		}
 	}
 	addMomentum() {
-		if (downPressed === true || controlPressed === true && this.yspeed < 5) {
-			this.yspeed += 3;
-		} else if (upPressed === true || shiftPressed === true && this.yspeed < 5) {
+		if (PaddleIsMoving == -1 && this.yspeed < 5) {
 			this.yspeed += -3;
+		} else if (PaddleIsMoving == 1 && this.yspeed < 5) {
+			this.yspeed += 3;
 		}
 	}
 	checkPaddles() {

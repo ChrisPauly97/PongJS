@@ -1,56 +1,68 @@
 "use strict";
-var slow = false;
-var invert = false;
-var gameStart = false;
+var slow, invert, gameStart;
 var count = 0,i = 0,PaddleIsMoving = 0;
 var p1Score = 0, p2Score = 0;
 var rand1,rand2,rand3;
-var RightPaddle;
-var LeftPaddle;
+var RightPaddle, LeftPaddle;
 var Pucks = [];
 var width = 600;
 var height = 400;
 
 function setup() {
-  createCanvas(600, 400);
-	Pucks.push(new Puck(12, 0, 0, width/2, height/2));
+  createCanvas(width,height);
+	Pucks.push(new Puck(12, 4, 0, width/2, height/2));
   RightPaddle = new Paddle(0,585,180,10,80);
 	LeftPaddle = new Paddle(0,5,180,10,80);
 	for(i = 0;i < Pucks.length; i++){
 	  Pucks[i].reset();
 	}
 }
+
 function createPuck(Paddle){
-  Pucks.push(new Puck(12,-10,0,Paddle.x -Paddle.Pwidth/2 - 12,Paddle.y +40))
+  Pucks.push(new Puck(12,-3,2,Paddle.x -Paddle.Pwidth/2 - 12,Paddle.y +40))
 }
+
 function draw() {
 	background(0);
 	drawControls();
 	Scores();
-	// If the game is not running
-	//draw the puck in the center
 	if (gameStart === false) {
 		Pucks[0].show(rand1,rand2,rand3);
 	}
-
-	// Modes
+	if(keyIsDown(UP_ARROW)){
+	  RightPaddle.move(-7);
+	}else{
+	  RightPaddle.move(0);
+	}
+	if(keyIsDown(87)){
+	  LeftPaddle.move(-7);
+	}else{
+	  LeftPaddle.move(0);
+	}
+	if(keyIsDown(DOWN_ARROW)){
+	  RightPaddle.move(7);
+	}else{
+	  RightPaddle.move(0);
+	}
+	if(keyIsDown(83)){
+	  LeftPaddle.move(7);
+	}else{
+	  LeftPaddle.move(0);
+	}
 	//invertMode();
   for(i = 0; i< Pucks.length; i++){
     //Pucks[i].flickerMode();
-	  //Pucks[i].slowMode();
+	  Pucks[i].slowMode();
   	// Puck Functions
   	Pucks[i].update();
   	Pucks[i].checkPaddles();
   	Pucks[i].yEdges();
-  	Pucks[i].xEdges();
-  	Pucks[i].show();
+    Pucks[i].xEdges();
+    Pucks[i].show();
   }
-
   //Paddle Functions
-	RightPaddle.update();
-	LeftPaddle.update();
-	RightPaddle.draw();
-	LeftPaddle.draw();
+	RightPaddle.show();
+	LeftPaddle.show();
 
 	if (count > 1500) {
 		count = 0;
