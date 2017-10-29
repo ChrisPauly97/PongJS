@@ -9,13 +9,11 @@ var width = 600;
 var height = 400;
 
 function setup() {
-  createCanvas(width,height);
-	Pucks.push(new Puck(12, 4, 0, width/2, height/2));
+  createCanvas(600,400);
+	Pucks.push(new Puck(12, 4, 0, 300, 200));
   RightPaddle = new Paddle(0,585,180,10,80);
 	LeftPaddle = new Paddle(0,5,180,10,80);
-	for(i = 0;i < Pucks.length; i++){
-	  Pucks[i].reset();
-	}
+	Pucks[0].reset();
 }
 
 function createPuck(Paddle){
@@ -26,9 +24,6 @@ function draw() {
 	background(0);
 	drawControls();
 	Scores();
-	if (gameStart === false) {
-		Pucks[0].show(rand1,rand2,rand3);
-	}
 	if(keyIsDown(UP_ARROW)){
 	  RightPaddle.move(-7);
 	}else{
@@ -49,10 +44,18 @@ function draw() {
 	}else{
 	  LeftPaddle.move(0);
 	}
+	// Deal with the first puck as a separate entity
+	Pucks[0].update();
+  Pucks[0].checkPaddles();
+  Pucks[0].yEdges();
+  Pucks[0].xEdges();
+  Pucks[0].show(rand1,rand2,rand3);
+  //Pucks[0].flickerMode();
+	//Pucks[0].slowMode();
 	//invertMode();
-  for(i = 0; i< Pucks.length; i++){
+  for(i = Pucks.length-1; i >0 ; i--){
     //Pucks[i].flickerMode();
-	  Pucks[i].slowMode();
+	  //Pucks[i].slowMode();
   	// Puck Functions
   	Pucks[i].update();
   	Pucks[i].checkPaddles();
