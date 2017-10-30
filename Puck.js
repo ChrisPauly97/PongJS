@@ -7,6 +7,7 @@ class Puck{
     this.yspeed = yspeed;
     this.x = x;
     this.y = y;
+    this.toRemove = false;
   }
 
   // Draws the puck at the position defined in update
@@ -22,7 +23,7 @@ class Puck{
 		rand2 = random(0, 255);
 		rand3 = random(0, 255);
 		this.xspeed = 4;
-		this.yspeed = 0;
+		this.yspeed = 2;
 		this.x = width/2;
 		this.y = height/2;
 		gameStart = false;
@@ -40,11 +41,12 @@ class Puck{
 	}
 	flickerMode() {
 		if (count >= 400 && count <= 700) {
-			if (random(0, 1) > 0.85 && gameStart === true) {
+			if (random(0, 1) > 0.85) {
 				this.show(rand1, rand2, rand3);
 			}
 		}else if(count >= 350 && count <= 700){
       drawMode("Flicker Mode");
+      this.show(rand1, rand2, rand3);
 		}
 		else {
 		  this.show(rand1, rand2, rand3);
@@ -60,21 +62,15 @@ class Puck{
 		}
 	}
 	xEdges() {
-		if (this.x > width) {
+		if (this.x > 600) {
 			p1Score++;
-			if(Pucks.length > 1){
-			  Pucks.pop(this);
-			}else{
-			  this.reset();
-			}
-		} else if (this.x < 0) {
+      return false;
+    } else if (this.x < 0) {
 			p2Score++;
-			if(Pucks.length > 1){
-			  Pucks.pop(this);
-			}else{
-			  this.reset();
-			}
-		}
+      return false;
+		} else{
+      return true;
+    }
 	}
 	yEdges() {
 		if (this.y - this.r < 0 || this.y + this.r > height) {
@@ -82,29 +78,29 @@ class Puck{
 		}
 	}
 	addMomentum() {
-		if (PaddleIsMoving == -1 && this.yspeed < 5) {
+		if (PaddleIsMoving == -1) {
 			this.yspeed += -3;
-		} else if (PaddleIsMoving == 1 && this.yspeed < 5) {
+		} else if (PaddleIsMoving == 1) {
 			this.yspeed += 3;
 		}
 	}
 	checkPaddles() {
-		if (this.x - this.r -5 < LeftPaddle.x + LeftPaddle.Pwidth/2 &&
-			this.y > LeftPaddle.y &&
-			this.y < LeftPaddle.y + 80){
+		if ((this.x - this.r) < (LeftPaddle.x + LeftPaddle.Pwidth/2) &&
+			this.y + this.r > LeftPaddle.y &&
+			this.y - this.r < LeftPaddle.y + 80){
 			 this.xspeed = this.xspeed * -1;
 			 this.addMomentum();
-			 if(random(0,1) > 0.8){
-			  createPuck(LeftPaddle);
-			 }
-		} else if (this.x  + this.r -5 > RightPaddle.x - RightPaddle.Pwidth/2 &&
-			this.y > RightPaddle.y &&
-			this.y < RightPaddle.y + 80) {
+       if(random(0,1) > 0.8){
+			   createPuck(LeftPaddle);
+       }
+		} else if (this.x  + this.r == RightPaddle.x - RightPaddle.Pwidth/2 &&
+			this.y + this.r > RightPaddle.y &&
+			this.y - this.r < RightPaddle.y + 80) {
 			  this.xspeed = this.xspeed * -1;
 			  this.addMomentum();
-			  if(random(0,1) > 0.8){
+        if(random(0,1) > 0.8){
           createPuck(RightPaddle);
-			  }
+        }
 			}
 		}
 	}
