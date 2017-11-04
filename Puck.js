@@ -15,7 +15,7 @@ class Puck{
 	  push();
 		fill(rand1, rand2, rand3);
 		ellipse(this.x, this.y, 2 * this.r, 2 * this.r);
-		pop();
+	  pop();
 	}
 	// Reset the pucks color and position
 	reset() {
@@ -40,16 +40,11 @@ class Puck{
 		}
 	}
 	flickerMode() {
-		if (count >= 400 && count <= 700) {
-			if (random(0, 1) > 0.85) {
-				this.show(rand1, rand2, rand3);
-			}
-		}else if(count >= 350 && count <= 700){
+    if (count >= 400 && count <= 700) {
       drawMode("Flicker Mode");
-      this.show(rand1, rand2, rand3);
-		}
-		else {
-		  this.show(rand1, rand2, rand3);
+    }
+		if (random(0, 1) > 0.85) {
+			this.show(rand1, rand2, rand3);
 		}
 	}
 	update() {
@@ -62,10 +57,10 @@ class Puck{
 		}
 	}
 	xEdges() {
-		if (this.x > 600) {
+		if (this.x > 610) {
 			p1Score++;
       return false;
-    } else if (this.x < 0) {
+    } else if (this.x < -10) {
 			p2Score++;
       return false;
 		} else{
@@ -85,22 +80,27 @@ class Puck{
 		}
 	}
 	checkPaddles() {
-		if ((this.x - this.r) < (LeftPaddle.x + LeftPaddle.Pwidth/2) &&
-			this.y + this.r > LeftPaddle.y &&
-			this.y - this.r < LeftPaddle.y + 80){
-			 this.xspeed = this.xspeed * -1;
-			 this.addMomentum();
-       if(random(0,1) > 0.8){
-			   createPuck(LeftPaddle);
-       }
-		} else if (this.x  + this.r == RightPaddle.x - RightPaddle.Pwidth/2 &&
-			this.y + this.r > RightPaddle.y &&
-			this.y - this.r < RightPaddle.y + 80) {
-			  this.xspeed = this.xspeed * -1;
-			  this.addMomentum();
-        if(random(0,1) > 0.8){
-          createPuck(RightPaddle);
+        if(this.x + this.r > RightPaddle.x + 5){
+            return;
+        }else if(this.x - this.r < LeftPaddle.x + LeftPaddle.Pwidth -5 ){
+            return;
         }
-			}
+		if ((this.x - this.r) < (LeftPaddle.x + LeftPaddle.Pwidth) &&
+			this.y + this.r > LeftPaddle.y &&
+			this.y - this.r < LeftPaddle.y + LeftPaddle.Pheight){
+		    this.xspeed = this.xspeed * -1;
+		    this.addMomentum();
+            if(random(0,1) > 0.8){
+			 createPuck(LeftPaddle);
+            }
+        } else if ((this.x  + this.r) >  RightPaddle.x &&
+			this.y + this.r > RightPaddle.y &&
+			this.y - this.r < RightPaddle.y + RightPaddle.Pheight) {
+			this.xspeed = this.xspeed * -1;
+			this.addMomentum();
+            if(random(0,1) > 0.8){
+            createPuck(RightPaddle);
+            }
 		}
 	}
+}

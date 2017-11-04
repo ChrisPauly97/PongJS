@@ -6,21 +6,24 @@ var rand1,rand2,rand3;
 var RightPaddle, LeftPaddle;
 var width = 600;
 var height = 400;
-var Pucks = [];
-var alivePucks = [];
-
+var Pucks = [],alivePucks = [],Obstacles = [];
 function setup() {
   createCanvas(600,400);
 	Pucks.push(new Puck(12, 4, 0, 300, 200));
-  RightPaddle = new Paddle(0,585,180,10,80);
-	LeftPaddle = new Paddle(0,5,180,10,80);
+    RightPaddle = new Paddle(0,563,180,30,80);
+	LeftPaddle = new Paddle(0,5,180,30,80);
+    var rand1 = random(100,500)
+    var rand2 = random(50,350)
+    Obstacles.push(new Obstacle(rand1,rand2,30,80));
+    print(Obstacles)
+
 	Pucks[0].reset();
 }
 
 function createPuck(Paddle){
   if(Paddle.x === 5){
     alivePucks.push(new Puck(12,3,2,Paddle.x +Paddle.Pwidth/2 + 30,Paddle.y +40))
-  }else if(Paddle.x === 585){
+}else if(Paddle.x === 563){
     alivePucks.push(new Puck(12,-3,2,Paddle.x -Paddle.Pwidth/2 - 12,Paddle.y +40))
   }
 }
@@ -66,11 +69,19 @@ function draw() {
         alivePucks.push(Pucks[i]);
     }
   }
+  Obstacles[0].show();
+  for(i = 0; i < Obstacles.length; i++){
+      Obstacles[i].show();
+  }
   // For all pucks on screen
   for(i = 0; i < alivePucks.length; i++){
     // Update them
     alivePucks[i].update();
-    alivePucks[i].flickerMode();
+    if (count >= 400 && count <= 700) {
+      alivePucks[i].flickerMode();
+    }else{
+      alivePucks[i].show();
+    }
     alivePucks[i].slowMode();
     alivePucks[i].yEdges();
     alivePucks[i].checkPaddles();
