@@ -6,6 +6,8 @@ class Obstacle{
         this.Owidth = Owidth;
         this.Oheight = Oheight;
     }
+
+
     // Draws the paddle on a given side
     show() {
       push();
@@ -13,4 +15,6 @@ class Obstacle{
         rect(this.x, this.y, this.Owidth, this.Oheight);
       pop();
     }
+
+    
 }
