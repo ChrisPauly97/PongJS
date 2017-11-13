@@ -1,6 +1,6 @@
 "use strict";
-class Obstacle{
-    constructor(x,y,Owidth,Oheight){
+class Obstacle {
+    constructor(x, y, Owidth, Oheight) {
         this.x = x;
         this.y = y;
         this.Owidth = Owidth;
@@ -10,10 +10,10 @@ class Obstacle{
 
     // Draws the paddle on a given side
     show() {
-      push();
+        push();
         fill(255);
         rect(this.x, this.y, this.Owidth, this.Oheight);
-      pop();
+        pop();
     }
 
 
