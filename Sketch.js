@@ -1,77 +1,121 @@
 "use strict";
-var slow, invert, gameStart;
-var count = 0,
-  i = 0,
-  PaddleIsMoving = 0;
-var p1Score = 0,
-  p2Score = 0;
-var rand1, rand2, rand3;
-var RightPaddle, LeftPaddle;
-var width = 600;
-var height = 400;
+var gameStart, time, posX, posY, updated;
 var Pucks = [],
   alivePucks = [],
-  Obstacles = [];
+  Obstacles = [],
+  Paddles = [];
+var i = 0,
+  PaddleIsMoving = 0,
+  p1Score = 0,
+  p2Score = 0;
+var width = 600;
+var height = 400;
+var invert, flicker, slow;
 
 function setup() {
+  drawControls();
   createCanvas(600, 400);
-  Pucks.push(new Puck(12, 4, 0, 300, 200));
-  RightPaddle = new Paddle(0, 563, 180, 30, 80);
-  LeftPaddle = new Paddle(0, 5, 180, 30, 80);
-  Obstacles.push(new Obstacle(300, 200, 30, 80));
-  Pucks[0].reset();
+
+  Pucks.push(new Puck(12, 5, 4, 300, 200));
+  Paddles.push(new Obj(0, 5, 180, 30, 80));
+  Paddles.push(new Obj(0, 563, 180, 30, 80));
+
+  for(i = 0; i < 3; i++){
+    Obstacles.push(new Obj(0,random(50,550), random(50,350), 20, 50));
+  }
 }
 
 function draw() {
+  updated = false;
+  time = window.frameCount % 1100;
   alivePucks = []
+
   background(0);
-  drawControls();
   drawScores();
   checkKeys();
-  // For every Puck
-  for (i = 0; i < Pucks.length; i++) {
-    //If its onscreen
-    if (Pucks[i].xEdges()) {
-      // Add it to the alive pucks list
-      alivePucks.push(Pucks[i]);
+  // Special Modes
+  slowMode();
+  invertMode();
+  flickerMode();
+
+  for (let puck of Pucks) {
+    if (puck.xEdges()) {
+      alivePucks.push(puck);
     }
   }
-  // For all pucks on screen
-  for (i = 0; i < alivePucks.length; i++) {
-    // Update them
-    alivePucks[i].update();
-    if (count >= 400 && count <= 700) {
-      alivePucks[i].flickerMode();
+  Pucks = [];
+
+  for (let alive of alivePucks) {
+    alive.yEdges();
+    if (flicker == true) {
+      alive.flickerMode();
     } else {
-      alivePucks[i].show();
+      alive.show();
     }
-    alivePucks[i].yEdges();
-    // alivePucks[i].checkObstacles();
-    alivePucks[i].checkPaddles();
+
+    for (let paddle of Paddles) {
+      paddle.show();
+      puckCollision(alive, paddle);
+    }
+
+    for (let obstacle of Obstacles) {
+      obstacle.show();
+      puckCollision(alive, obstacle)
+    }
   }
+
+  for( let obstacle of Obstacles){
+    if(PaddleIsMoving == -1){
+      obstacle.move(3);
+    }else if(PaddleIsMoving == 1){
+      obstacle.move(-3);
+    }
+  }
+
   if (alivePucks.length == 1 && alivePucks[0].xEdges() === false) {
     alivePucks[0].reset();
   }
-  Pucks = [];
-  arrayCopy(alivePucks, 0, Pucks, 0, alivePucks.length);
-  slowMode();
-  invertMode();
-  Obstacles[0].show();
-  for (i = 0; i < Obstacles.length; i++) {
-    Obstacles[i].show();
-  }
 
-  //Paddle Functions
-  RightPaddle.show();
-  LeftPaddle.show();
-  resetCount();
+  arrayCopy(alivePucks, 0, Pucks, 0, alivePucks.length);
 }
 
-// Add a new puck to the game
+function collides(posX, posY, object, puck) {
+  var DeltaX = posX - Math.max(object.x, Math.min(posX, object.x + object.width));
+  var DeltaY = posY - Math.max(object.y, Math.min(posY, object.y + object.height));
+  return ((DeltaX * DeltaX + DeltaY * DeltaY) < (puck.r * puck.r))
+}
+
+function puckCollision(puck, paddle) {
+  posX = puck.x + puck.xspeed;
+  posY = puck.y + puck.yspeed;
+
+  if (collides(posX, puck.y, paddle, puck)) {
+    puck.xspeed *= -1;
+    puck.addMomentum();
+    createPuck(paddle);
+  } else if(!updated) {
+    puck.update('x');
+  }
+
+  if (collides(puck.x, posY, paddle, puck)) {
+    puck.yspeed *= -1;
+    puck.addMomentum();
+    createPuck(paddle);
+  } else if(!updated){
+    puck.update('y');
+  }
+
+  updated = true
+}
+
 function createPuck(Paddle) {
-  if (Paddle.x === 5) {
-    alivePucks.push(new Puck(12, 3, 2, Paddle.x + Paddle.Pwidth / 2 + 30, Paddle.y + 40))
-  } else if (Paddle.x === 563) {
-    alivePucks.push(new Puck(12, -3, 2, Paddle.x - Paddle.Pwidth / 2 - 12, Paddle.y + 40))
+
+  if (random(0, 1) > 0.9) {
+
+    if (Paddle.x === 5) {
+      alivePucks.push(new Puck(12, 3, 2, Paddle.x + Paddle.width / 2 + 30, Paddle.y + 40))
+    } else if (Paddle.x === 563) {
+      alivePucks.push(new Puck(12, -3, 2, Paddle.x - Paddle.width / 2 - 12, Paddle.y + 40))
+    }
   }
 }

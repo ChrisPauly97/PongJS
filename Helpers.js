@@ -27,31 +27,32 @@ function drawMode(txt) {
 }
 
 function invertMode() {
-  if (count >= 600 && count <= 1000) {
+  if (time >= 750 && time <= 1100) {
     drawMode("Invert Mode");
   }
-  if (count > 700 && count < 1000) {
+  if (time > 800 && time < 1100) {
     invert = true;
-  } else {
+  }else{
     invert = false;
   }
 }
-
-function slowMode() {
-  if (count >= 150 && count <= 350) {
-    drawMode("Slow Mode");
+function flickerMode() {
+  if (time >= 400 && time <= 700) {
+    drawMode("Flicker Mode");
   }
-  if (count >= 200 && count <= 350) {
-    slow = true;
-  } else {
-    slow = false;
+  if (time >= 450 && time <= 700) {
+    flicker = true;
+  }else{
+    flicker = false;
   }
 }
-
-function resetCount() {
-  if (count > 1500) {
-    count = 0;
-  } else {
-    count++;
+function slowMode() {
+  if (time >= 150 && time <= 350) {
+    drawMode("Slow Mode");
+  }
+  if (time >= 200 && time <= 350) {
+    slow = true;
+  }else{
+    slow = false;
   }
 }

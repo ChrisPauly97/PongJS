@@ -1,44 +1,27 @@
 "use strict";
 
 function checkKeys() {
-  if (keyIsDown(UP_ARROW) && invert == false) {
+  PaddleIsMoving = 0;
+  if (keyIsDown(UP_ARROW)){
     PaddleIsMoving = -1;
-    RightPaddle.move(-7);
-  } else if(keyIsDown(UP_ARROW) && invert == true){
+    Paddles[1].move(-7);
+  }
+  if (keyIsDown(87)){
+    PaddleIsMoving = -1;
+    Paddles[0].move(-7);
+  }
+  if (keyIsDown(DOWN_ARROW)){
     PaddleIsMoving = 1;
-    RightPaddle.move(7);
-  }else{
-    RightPaddle.move(0);
-    PaddleIsMoving = 0
+    Paddles[1].move(7);
   }
-  if (keyIsDown(87) && invert == false) {
-    PaddleIsMoving = -1;
-    LeftPaddle.move(-7);
-  } else if(keyIsDown(87) && invert == true) {
+  if (keyIsDown(83)){
     PaddleIsMoving = 1;
-    LeftPaddle.move(7);
-  }else{
-    LeftPaddle.move(0);
-    PaddleIsMoving = 0;
+    Paddles[0].move(7);
   }
-  if (keyIsDown(DOWN_ARROW) && invert == false) {
-    PaddleIsMoving = 1
-    RightPaddle.move(7);
-  } else if(keyIsDown(DOWN_ARROW) && invert == true){
-    PaddleIsMoving = -1;
-    RightPaddle.move(-7);
-  }else{
-    RightPaddle.move(0);
-    PaddleIsMoving = 0
+  if(PaddleIsMoving != 0){
+    return;
   }
-  if (keyIsDown(83) && invert == false) {
-    PaddleIsMoving = 1
-    LeftPaddle.move(7);
-  } else if(keyIsDown(83) && invert == true){
-    PaddleIsMoving = -1;
-    LeftPaddle.move(-7);
-  }else{
-    LeftPaddle.move(0);
-    PaddleIsMoving = 0
-  }
+  PaddleIsMoving = 0;
+  Paddles[0].move(0);
+  Paddles[1].move(0);
 }
