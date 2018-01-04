@@ -1,29 +1,29 @@
 "use strict";
 
 function drawControls() {
-  push();
-  fill(255);
-  textSize(24);
-  text("w", 10, 15);
-  text("s", 10, 390);
-  text("↑", 585, 14);
-  text("↓", 585, 394);
-  pop();
+    push();
+    fill(255);
+    textSize(24);
+    text("w", 10, 15);
+    text("s", 10, 390);
+    text("↑", 585, 14);
+    text("↓", 585, 394);
+    pop();
 }
 
 function drawScores() {
-  push();
-  fill(255);
-  textSize(24);
-  text("Player 1 Score: " + p1Score + "\n" + "Player 2 Score: " + p2Score, 210, 30);
-  pop();
+    push();
+    fill(255);
+    textSize(24);
+    text("Player 1 Score: " + p1Score + "\n" + "Player 2 Score: " + p2Score, 210, 30);
+    pop();
 }
 
 function drawMode(txt) {
-  push();
-  fill(255);
-  textSize(24);
-  text(txt, 230, 200);
+    push();
+    fill(255);
+    textSize(24);
+    text(txt, 230, 200);
 }
 
 function invertMode() {
