@@ -79,36 +79,5 @@ class Puck {
         this.yspeed += 3;
       }
     }
-
-
-    checkPaddles() {
-        if (this.x + this.r > RightPaddle.x + 5) {
-            return;
-        } else if (this.x - this.r < LeftPaddle.x + LeftPaddle.Pwidth - 5) {
-            return;
-        }
-
-        if ((this.x - this.r) < (LeftPaddle.x + LeftPaddle.Pwidth) &&
-            this.y + this.r > LeftPaddle.y &&
-            this.y - this.r < LeftPaddle.y + LeftPaddle.Pheight) {
-
-            this.xspeed = this.xspeed * -1;
-            this.addMomentum();
-
-            if (random(0, 1) > 0.8) {
-                createPuck(LeftPaddle);
-            }
-
-        } else if ((this.x + this.r) > RightPaddle.x &&
-            this.y + this.r > RightPaddle.y &&
-            this.y - this.r < RightPaddle.y + RightPaddle.Pheight) {
-
-            this.xspeed = this.xspeed * -1;
-            this.addMomentum();
-
-            if (random(0, 1) > 0.8) {
-                createPuck(RightPaddle);
-            }
-        }
-    }
+  }
 }

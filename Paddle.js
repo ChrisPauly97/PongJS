@@ -24,4 +24,5 @@ class Obj {
     } else if (this.y > 320) {
       this.y = 320;
     }
+  }
 }

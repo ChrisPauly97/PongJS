@@ -115,7 +115,7 @@ function createPuck(Paddle) {
     if (Paddle.x === 5) {
       alivePucks.push(new Puck(12, 3, 2, Paddle.x + Paddle.width / 2 + 30, Paddle.y + 40))
     } else if (Paddle.x === 563) {
-      alivePucks.push(new Puck(12, -3, 2, Paddle.x - Paddle.width / 2 - 12, Paddle.y + 40))
+      alivePucks.push(new Puck(12, -3, 2, Paddle.x - Paddle.width / 2, Paddle.y + 40))
     }
   }
 }
