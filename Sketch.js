@@ -1,5 +1,5 @@
 "use strict";
-var gameStart, time, posX, posY, updated;
+var gameStart, time, posX, posY;
 var Pucks = [],
   alivePucks = [],
   Obstacles = [],
@@ -16,17 +16,16 @@ function setup() {
   drawControls();
   createCanvas(600, 400);
 
-  Pucks.push(new Puck(12, 5, 4, 300, 200));
+  Pucks.push(new Puck(12, 5, 4, 300, 200,false));
   Paddles.push(new Obj(0, 5, 180, 30, 80));
   Paddles.push(new Obj(0, 563, 180, 30, 80));
 
   for(i = 0; i < 3; i++){
-    Obstacles.push(new Obj(0,random(50,550), random(50,350), 20, 50));
+    Obstacles.push(new Obj(0,random(150,350), random(100,300), 20, 50));
   }
 }
 
 function draw() {
-  updated = false;
   time = window.frameCount % 1100;
   alivePucks = []
 
@@ -52,7 +51,10 @@ function draw() {
     } else {
       alive.show();
     }
-
+    if(alive.updated == false){
+      alive.update('x')
+      alive.update('y')
+    }
     for (let paddle of Paddles) {
       paddle.show();
       puckCollision(alive, paddle);
@@ -88,12 +90,11 @@ function collides(posX, posY, object, puck) {
 function puckCollision(puck, paddle) {
   posX = puck.x + puck.xspeed;
   posY = puck.y + puck.yspeed;
-
   if (collides(posX, puck.y, paddle, puck)) {
     puck.xspeed *= -1;
     puck.addMomentum();
     createPuck(paddle);
-  } else if(!updated) {
+  } else if(puck.updated = false) {
     puck.update('x');
   }
 
@@ -101,21 +102,18 @@ function puckCollision(puck, paddle) {
     puck.yspeed *= -1;
     puck.addMomentum();
     createPuck(paddle);
-  } else if(!updated){
+  } else if(puck.updated = false){
     puck.update('y');
   }
 
-  updated = true
 }
 
 function createPuck(Paddle) {
-
   if (random(0, 1) > 0.9) {
-
     if (Paddle.x === 5) {
-      alivePucks.push(new Puck(12, 3, 2, Paddle.x + Paddle.width / 2 + 30, Paddle.y + 40))
+      alivePucks.push(new Puck(12, 3, 2, Paddle.x + Paddle.width / 2 + 30, Paddle.y + 40,false))
     } else if (Paddle.x === 563) {
-      alivePucks.push(new Puck(12, -3, 2, Paddle.x - Paddle.width / 2, Paddle.y + 40))
+      alivePucks.push(new Puck(12, -3, 2, Paddle.x - Paddle.width / 2, Paddle.y + 40,false))
     }
   }
 }

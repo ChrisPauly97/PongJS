@@ -1,15 +1,17 @@
 "use strict";
 class Puck {
-  constructor(r, xspeed, yspeed, x, y) {
+  constructor(r, xspeed, yspeed, x, y,updated) {
     this.r = r;
     this.xspeed = xspeed;
     this.yspeed = yspeed;
     this.x = x;
     this.y = y;
+    this.updated = updated;
   }
 
   // Draws the puck at the position defined in update
   show() {
+    this.updated = false;
     fill(255);
     ellipse(this.x, this.y, 2 * this.r, 2 * this.r);
   }
@@ -28,6 +30,7 @@ class Puck {
         this.y += this.yspeed;
       }
     }
+    this.updated = true;
   }
 
   // Reset the pucks color and position

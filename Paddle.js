@@ -10,7 +10,6 @@ class Obj {
   }
   // Draws the paddle on a given side
   show() {
-    //fill(	255,105,180)
     rect(this.x, this.y, this.width, this.height);
   }
   // Moves the paddle by a given value
