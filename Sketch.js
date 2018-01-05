@@ -1,4 +1,3 @@
-"use strict";
 var gameStart, time, posX, posY;
 var Pucks = [],
   alivePucks = [],

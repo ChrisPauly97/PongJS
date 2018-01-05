@@ -1,4 +1,3 @@
-"use strict";
 // Defines an object
 class Obj {
 

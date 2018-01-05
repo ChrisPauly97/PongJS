@@ -1,5 +1,3 @@
-"use strict";
-
 // Check Keyboard input and move paddles accordingly
 function checkKeys() {
   PaddleIsMoving = 0;

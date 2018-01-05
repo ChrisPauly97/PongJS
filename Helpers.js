@@ -1,5 +1,3 @@
-"use strict";
-
 // Display the controls
 function drawControls() {
     push();

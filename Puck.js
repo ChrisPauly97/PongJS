@@ -1,4 +1,3 @@
-"use strict";
 // Defines a puck object
 class Puck {
   constructor(r, xspeed, yspeed, x, y,updated) {
@@ -62,7 +61,7 @@ class Puck {
       return true;
     }
   }
-  
+
   // Check if the puck hits the top or bottom of the screen
   yEdges() {
     if (this.y - this.r < 0 || this.y + this.r > height) {
