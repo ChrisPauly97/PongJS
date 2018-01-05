@@ -1,6 +1,7 @@
 "use strict";
-// Defines a paddle object
+// Defines an object
 class Obj {
+
   constructor(ychange, x, y, width, height) {
     this.ychange = ychange;
     this.x = x;
@@ -8,10 +9,12 @@ class Obj {
     this.width = width;
     this.height = height;
   }
+
   // Draws the paddle on a given side
   show() {
     rect(this.x, this.y, this.width, this.height);
   }
+
   // Moves the paddle by a given value
   move(value) {
     if(invert){

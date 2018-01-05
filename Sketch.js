@@ -26,9 +26,10 @@ function setup() {
 }
 
 function draw() {
+  // Timer to allow special modes to repeat
   time = window.frameCount % 1100;
   alivePucks = []
-
+//
   background(0);
   drawScores();
   checkKeys();
@@ -37,24 +38,21 @@ function draw() {
   invertMode();
   flickerMode();
 
+  // Limit the number of pucks on screen at any time.
+  if(Pucks.length > 3){
+    Pucks.length = 3;
+  }
+  // Save only the on screen pucks
   for (let puck of Pucks) {
+    puck.updated = false;
     if (puck.xEdges()) {
       alivePucks.push(puck);
     }
   }
   Pucks = [];
 
+  // Check if the pucks collide with paddles or obstacles
   for (let alive of alivePucks) {
-    alive.yEdges();
-    if (flicker == true) {
-      alive.flickerMode();
-    } else {
-      alive.show();
-    }
-    if(alive.updated == false){
-      alive.update('x')
-      alive.update('y')
-    }
     for (let paddle of Paddles) {
       paddle.show();
       puckCollision(alive, paddle);
@@ -64,8 +62,22 @@ function draw() {
       obstacle.show();
       puckCollision(alive, obstacle)
     }
-  }
 
+    // Update Pucks
+    alive.yEdges();
+    if (flicker == true) {
+      alive.flickerMode();
+    } else {
+      alive.show();
+    }
+
+    if(alive.updated == false){
+      alive.update('x')
+      alive.update('y')
+    }
+
+  }
+  // Move the obstacle inversely based on the paddles movement.
   for( let obstacle of Obstacles){
     if(PaddleIsMoving == -1){
       obstacle.move(3);
@@ -74,13 +86,15 @@ function draw() {
     }
   }
 
-  if (alivePucks.length == 1 && alivePucks[0].xEdges() === false) {
+  // If the last puck goes off-screen, reset
+  if (alivePucks.length == 1 && alivePucks[0].xEdges() == false) {
     alivePucks[0].reset();
   }
 
   arrayCopy(alivePucks, 0, Pucks, 0, alivePucks.length);
 }
 
+// Calculate the distance between the puck and the object and check if a collision has occurred
 function collides(posX, posY, object, puck) {
   var DeltaX = posX - Math.max(object.x, Math.min(posX, object.x + object.width));
   var DeltaY = posY - Math.max(object.y, Math.min(posY, object.y + object.height));
@@ -88,32 +102,33 @@ function collides(posX, posY, object, puck) {
 }
 
 function puckCollision(puck, paddle) {
+
+  // The next X and Y of the puck
   posX = puck.x + puck.xspeed;
   posY = puck.y + puck.yspeed;
+
+  // Collision on the X axis
   if (collides(posX, puck.y, paddle, puck)) {
     puck.xspeed *= -1;
     puck.addMomentum();
     createPuck(paddle);
-  } else if(puck.updated = false) {
-    puck.update('x');
   }
 
+  // Collision on the y-axis
   if (collides(puck.x, posY, paddle, puck)) {
     puck.yspeed *= -1;
     puck.addMomentum();
     createPuck(paddle);
-  } else if(puck.updated = false){
-    puck.update('y');
   }
-
 }
 
+// Create a new Puck at the given paddle
 function createPuck(Paddle) {
-  if (random(0, 1) > 0.9) {
-    if (Paddle.x === 5) {
-      alivePucks.push(new Puck(12, 3, 2, Paddle.x + Paddle.width / 2 + 30, Paddle.y + 40,false))
-    } else if (Paddle.x === 563) {
-      alivePucks.push(new Puck(12, -3, 2, Paddle.x - Paddle.width / 2, Paddle.y + 40,false))
+  if (random(0, 1) > 0.0) {
+    if (Paddle.x === Paddles[0].x) {
+      alivePucks.push(new Puck(12, random(1,3),random(1,2), Paddle.x + Paddle.width / 2 + 30, Paddle.y + 40,false))
+    } else if (Paddle.x === Paddles[1].x) {
+      alivePucks.push(new Puck(12, random(-1,-3),random(1,2), Paddle.x - Paddle.width / 2, Paddle.y + 40,false))
     }
   }
 }

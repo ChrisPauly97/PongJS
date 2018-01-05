@@ -1,4 +1,5 @@
 "use strict";
+// Defines a puck object
 class Puck {
   constructor(r, xspeed, yspeed, x, y,updated) {
     this.r = r;
@@ -11,11 +12,11 @@ class Puck {
 
   // Draws the puck at the position defined in update
   show() {
-    this.updated = false;
     fill(255);
     ellipse(this.x, this.y, 2 * this.r, 2 * this.r);
   }
 
+  // Move the puck according to its velocity
   update(axis) {
     if (axis == 'x') {
       if (slow) {
@@ -42,7 +43,7 @@ class Puck {
     gameStart = false;
   }
 
-  // Puck Modes
+  // Puck Mode
   flickerMode() {
     if (random(0, 1) > 0.85) {
       this.show();
@@ -61,13 +62,15 @@ class Puck {
       return true;
     }
   }
-
+  
+  // Check if the puck hits the top or bottom of the screen
   yEdges() {
     if (this.y - this.r < 0 || this.y + this.r > height) {
       this.yspeed = this.yspeed * -1;
     }
   }
 
+  // if a paddle is moving during a collision, add speed to the puck
   addMomentum() {
     if (invert) {
       if (PaddleIsMoving == -1) {

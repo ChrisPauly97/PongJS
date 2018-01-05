@@ -1,5 +1,6 @@
 "use strict";
 
+// Display the controls
 function drawControls() {
     push();
     fill(255);
@@ -11,6 +12,7 @@ function drawControls() {
     pop();
 }
 
+// Display the scores
 function drawScores() {
     push();
     fill(255);
@@ -19,6 +21,7 @@ function drawScores() {
     pop();
 }
 
+// Display the current mode
 function drawMode(txt) {
     push();
     fill(255);
@@ -26,6 +29,7 @@ function drawMode(txt) {
     text(txt, 230, 200);
 }
 
+// Mode to invert the controls
 function invertMode() {
   if (time >= 750 && time <= 1100) {
     drawMode("Invert Mode");
@@ -36,6 +40,8 @@ function invertMode() {
     invert = false;
   }
 }
+
+// Mode to cause the pucks to flicker
 function flickerMode() {
   if (time >= 400 && time <= 700) {
     drawMode("Flicker Mode");
@@ -46,6 +52,8 @@ function flickerMode() {
     flicker = false;
   }
 }
+
+// Mode to slow down pucks
 function slowMode() {
   if (time >= 150 && time <= 350) {
     drawMode("Slow Mode");
