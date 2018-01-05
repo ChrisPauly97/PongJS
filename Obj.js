@@ -22,8 +22,8 @@ class Obj {
     this.y += value;
     if (this.y < 0) {
       this.y = 0;
-    } else if (this.y > 320) {
-      this.y = 320;
+    } else if (this.y > height - this.height) {
+      this.y = height - this.height;
     }
   }
 }

@@ -5,8 +5,8 @@ function drawControls() {
     textSize(24);
     text("w", 10, 15);
     text("s", 10, 390);
-    text("↑", 585, 14);
-    text("↓", 585, 394);
+    text("↑", width - 15, 14);
+    text("↓", width - 15, 394);
     pop();
 }
 
@@ -15,7 +15,7 @@ function drawScores() {
     push();
     fill(255);
     textSize(24);
-    text("Player 1 Score: " + p1Score + "\n" + "Player 2 Score: " + p2Score, 210, 30);
+    text("Player 1 Score: " + p1Score + "\n" + "Player 2 Score: " + p2Score, (width/2) - 90, 30);
     pop();
 }
 
@@ -24,7 +24,7 @@ function drawMode(txt) {
     push();
     fill(255);
     textSize(24);
-    text(txt, 230, 200);
+    text(txt, (width/2)-70, height/2);
 }
 
 // Mode to invert the controls

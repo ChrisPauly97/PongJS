@@ -1,4 +1,4 @@
-var gameStart, time, posX, posY;
+var gameStart, time, posX, posY, width, height;
 var Pucks = [],
   alivePucks = [],
   Obstacles = [],
@@ -7,20 +7,18 @@ var i = 0,
   PaddleIsMoving = 0,
   p1Score = 0,
   p2Score = 0;
-var width = 600;
-var height = 400;
 var invert, flicker, slow;
 
 function setup() {
   drawControls();
-  createCanvas(600, 400);
+  createCanvas(width = 600,height = 400);
 
-  Pucks.push(new Puck(12, 5, 4, 300, 200,false));
+  Pucks.push(new Puck(12, 5, 4, width/2, height/2,false));
   Paddles.push(new Obj(0, 5, 180, 30, 80));
-  Paddles.push(new Obj(0, 563, 180, 30, 80));
+  Paddles.push(new Obj(0, width-40, 180, 30, 80));
 
   for(i = 0; i < 3; i++){
-    Obstacles.push(new Obj(0,random(150,350), random(100,300), 20, 50));
+    Obstacles.push(new Obj(0,random(width/4,width*0.75), random(height/4,height*0.75), 20, 50));
   }
 }
 
@@ -28,7 +26,6 @@ function draw() {
   // Timer to allow special modes to repeat
   time = window.frameCount % 1100;
   alivePucks = []
-//
   background(0);
   drawScores();
   checkKeys();
