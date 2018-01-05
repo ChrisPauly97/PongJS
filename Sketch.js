@@ -123,7 +123,7 @@ function puckCollision(puck, paddle) {
 
 // Create a new Puck at the given paddle
 function createPuck(Paddle) {
-  if (random(0, 1) > 0.0) {
+  if (random(0, 1) > 0.9) {
     if (Paddle.x === Paddles[0].x) {
       alivePucks.push(new Puck(12, random(1,3),random(1,2), Paddle.x + Paddle.width / 2 + 30, Paddle.y + 40,false))
     } else if (Paddle.x === Paddles[1].x) {
