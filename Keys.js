@@ -1,26 +1,29 @@
 // Check Keyboard input and move paddles accordingly
 function checkKeys() {
-  PaddleIsMoving = 0;
-  if (keyIsDown(UP_ARROW)){
-    PaddleIsMoving = -1;
-    Paddles[1].move(-7);
+  for(let paddle of Paddles){
+    paddle.moving = 0;
+    if (keyIsDown(UP_ARROW)){
+      paddle.moving = -1;
+      Paddles[1].move(-7);
+    }
+    if (keyIsDown(87)){
+      paddle.moving = -1;
+      Paddles[0].move(-7);
+    }
+    if (keyIsDown(DOWN_ARROW)){
+      paddle.moving = 1;
+      Paddles[1].move(7);
+    }
+    if (keyIsDown(83)){
+      paddle.moving = 1;
+      Paddles[0].move(7);
+    }
+    if(paddle.moving != 0){
+      return;
+    }
+    paddle.moving = 0;
+    Paddles[0].move(0);
+    Paddles[1].move(0);
   }
-  if (keyIsDown(87)){
-    PaddleIsMoving = -1;
-    Paddles[0].move(-7);
-  }
-  if (keyIsDown(DOWN_ARROW)){
-    PaddleIsMoving = 1;
-    Paddles[1].move(7);
-  }
-  if (keyIsDown(83)){
-    PaddleIsMoving = 1;
-    Paddles[0].move(7);
-  }
-  if(PaddleIsMoving != 0){
-    return;
-  }
-  PaddleIsMoving = 0;
-  Paddles[0].move(0);
-  Paddles[1].move(0);
+
 }

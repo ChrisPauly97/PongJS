@@ -1,12 +1,13 @@
 // Defines a puck object
 class Puck {
-  constructor(r, xspeed, yspeed, x, y,updated) {
+  constructor(r, xspeed, yspeed, x, y,updated,flicker = false) {
     this.r = r;
     this.xspeed = xspeed;
     this.yspeed = yspeed;
     this.x = x;
     this.y = y;
     this.updated = updated;
+    this.flicker = flicker;
   }
 
   // Draws the puck at the position defined in update
@@ -16,19 +17,13 @@ class Puck {
   }
 
   // Move the puck according to its velocity
-  update(axis) {
-    if (axis == 'x') {
-      if (slow) {
-        this.x += this.xspeed * 0.4;
-      } else {
-        this.x += this.xspeed;
-      }
-    } else if (axis == 'y') {
-      if (slow) {
-        this.y += this.yspeed * 0.4;
-      } else {
-        this.y += this.yspeed;
-      }
+  update() {
+    if (gameState.slow) {
+      this.x += this.xspeed * 0.4;
+      this.y += this.yspeed * 0.4;
+    } else {
+      this.x += this.xspeed;
+      this.y += this.yspeed;
     }
     this.updated = true;
   }
@@ -39,23 +34,15 @@ class Puck {
     this.yspeed = 4;
     this.x = width / 2;
     this.y = height / 2;
-    gameStart = false;
-  }
-
-  // Puck Mode
-  flickerMode() {
-    if (random(0, 1) > 0.85) {
-      this.show();
-    }
   }
 
   // Puck Checks
   xEdges() {
     if (this.x > width) {
-      p1Score++;
+      gameState.p1Score++;
       return false;
     } else if (this.x < 0) {
-      p2Score++;
+      gameState.p2Score++;
       return false;
     } else {
       return true;
@@ -68,20 +55,31 @@ class Puck {
       this.yspeed = this.yspeed * -1;
     }
   }
+  // Check if the puck should flicker
+  shouldFlicker(){
+    if (gameState.time >= 400 && gameState.time <= 700) {
+      drawMode("Flicker Mode");
+      this.flicker = true;
+    }else{
+      this.flicker = false;
+    }
+  }
 
   // if a paddle is moving during a collision, add speed to the puck
-  addMomentum() {
-    if (invert) {
-      if (PaddleIsMoving == -1) {
-        this.yspeed += 3;
-      } else if (PaddleIsMoving == 1) {
-        this.yspeed += -3;
-      }
-    } else {
-      if (PaddleIsMoving == -1) {
-        this.yspeed += -3;
-      } else if (PaddleIsMoving == 1) {
-        this.yspeed += 3;
+  addMomentum(paddle) {
+    for(let paddle of Paddles){
+      if (paddle.invert) {
+        if (paddle.moving == -1) {
+          this.yspeed += 3;
+        } else if (paddle.moving == 1) {
+          this.yspeed += -3;
+        }
+      } else {
+        if (paddle.moving == -1) {
+          this.yspeed += -3;
+        } else if (paddle.moving == 1) {
+          this.yspeed += 3;
+        }
       }
     }
   }
