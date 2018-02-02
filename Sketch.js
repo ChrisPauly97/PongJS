@@ -43,8 +43,8 @@ function draw() {
 // If the last puck goes off-screen, reset
 function noPucks(){
 
-  if (alivePucks.length == 1 && !alivePucks[0].xEdges()) {
-    alivePucks[0].reset();
+  if (alivePucks.length == 1 && !alivePucks[0].xEdges(width)) {
+    alivePucks[0].reset(width,height);
   }
 }
 
@@ -62,7 +62,7 @@ function updateAlivePucks(){
     }
 
     if(!alive.updated){
-      alive.update();
+      alive.update(gameState);
     }
   }
 }
@@ -78,7 +78,7 @@ function getAlivePucks(){
   // Save only the on screen pucks
   for (let puck of Pucks) {
     puck.updated = false;
-    if (puck.xEdges()) {
+    if (puck.xEdges(width)) {
       alivePucks.push(puck);
     }
   }
@@ -118,7 +118,7 @@ function puckCollision(puck, obj) {
   if (collides(posX, puck.y, obj, puck)) {
     puck.xspeed *= -1;
     if(obj.moving){
-      puck.addMomentum();
+      puck.addMomentum(Paddles);
     }
     createPuck(obj);
   }
@@ -127,7 +127,7 @@ function puckCollision(puck, obj) {
   if (collides(puck.x, posY, obj, puck)) {
     puck.yspeed *= -1;
     if(obj.moving){
-      puck.addMomentum();
+      puck.addMomentum(Paddles);
     }
     createPuck(obj);
   }
@@ -137,9 +137,16 @@ function puckCollision(puck, obj) {
 function createPuck(Paddle) {
   if (random(0, 1) > 0.9) {
     if (Paddle.x === Paddles[0].x) {
-      alivePucks.push(new Puck(12, random(1,3),random(1,2), Paddle.x + Paddle.width / 2 + 30, Paddle.y + 40,false))
+      newP = new Puck(Paddle.x + 20, random(1,3),random(1,2), Paddle.x + Paddle.width / 2 + 30, Paddle.y + 40,false)
+      alivePucks.push(newP);
+      return newP;
     } else if (Paddle.x === Paddles[1].x) {
-      alivePucks.push(new Puck(12, random(-1,-3),random(1,2), Paddle.x - Paddle.width / 2, Paddle.y + 40,false))
+      newP = new Puck(Paddle.x - 20, random(1,3),random(1,2), Paddle.x + Paddle.width / 2 + 30, Paddle.y + 40,false)
+      alivePucks.push(newP);
+      return newP;
     }
   }
+
 }
+
+module.exports.createPuck = createPuck;

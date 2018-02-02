@@ -17,19 +17,21 @@ class Puck {
   }
 
   // Move the puck according to its velocity
-  update() {
+  update(gameState) {
+    this.updated = false;
     if (gameState.slow) {
       this.x += this.xspeed * 0.4;
       this.y += this.yspeed * 0.4;
+      this.updated = true;
     } else {
       this.x += this.xspeed;
       this.y += this.yspeed;
+      this.updated = true;
     }
-    this.updated = true;
   }
 
   // Reset the pucks color and position
-  reset() {
+  reset(width, height) {
     this.xspeed = 5;
     this.yspeed = 4;
     this.x = width / 2;
@@ -37,7 +39,7 @@ class Puck {
   }
 
   // Puck Checks
-  xEdges() {
+  xEdges(width,gameState) {
     if (this.x > width) {
       gameState.p1Score++;
       return false;
@@ -50,10 +52,13 @@ class Puck {
   }
 
   // Check if the puck hits the top or bottom of the screen
-  yEdges() {
+  yEdges(height) {
     if (this.y - this.r < 0 || this.y + this.r > height) {
       this.yspeed = this.yspeed * -1;
+      return false;
     }
+    return true;
+
   }
   // Check if the puck should flicker
   shouldFlicker(){
@@ -67,7 +72,6 @@ class Puck {
 
   // if a paddle is moving during a collision, add speed to the puck
   addMomentum(paddle) {
-    for(let paddle of Paddles){
       if (paddle.invert) {
         if (paddle.moving == -1) {
           this.yspeed += 3;
@@ -82,5 +86,5 @@ class Puck {
         }
       }
     }
-  }
 }
+module.exports.Puck = Puck;

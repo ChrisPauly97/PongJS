@@ -27,7 +27,7 @@ class Obj {
   }
 
   // Moves the paddle by a given value
-  move(value) {
+  move(value,gameState,height) {
     if(this.invert){
       value *= -1;
     }
@@ -43,3 +43,5 @@ class Obj {
     }
   }
 }
+
+module.exports.Obj = Obj;

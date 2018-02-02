@@ -22,3 +22,5 @@ class gameState{
     }
   }
 }
+
+module.exports.gameState = gameState;
