@@ -27,7 +27,7 @@ class Obj {
   }
 
   // Moves the paddle by a given value
-  move(value,gameState,height) {
+  move(value,gameState) {
     if(this.invert){
       value *= -1;
     }
@@ -38,8 +38,8 @@ class Obj {
     this.y += value;
     if (this.y < 0) {
       this.y = 0;
-    } else if (this.y > height - this.height) {
-      this.y = height - this.height;
+    } else if (this.y > gameState.height - this.height) {
+      this.y = gameState.height - this.height;
     }
   }
 }

@@ -1,3 +1,4 @@
+
 // Defines a puck object
 class Puck {
   constructor(r, xspeed, yspeed, x, y,updated,flicker = false) {
@@ -31,16 +32,16 @@ class Puck {
   }
 
   // Reset the pucks color and position
-  reset(width, height) {
+  reset(gameState) {
     this.xspeed = 5;
     this.yspeed = 4;
-    this.x = width / 2;
-    this.y = height / 2;
+    this.x = gameState.width / 2;
+    this.y = gameState.height / 2;
   }
 
   // Puck Checks
-  xEdges(width,gameState) {
-    if (this.x > width) {
+  xEdges(gameState) {
+    if (this.x > gameState.width) {
       gameState.p1Score++;
       return false;
     } else if (this.x < 0) {
@@ -52,14 +53,14 @@ class Puck {
   }
 
   // Check if the puck hits the top or bottom of the screen
-  yEdges(height) {
-    if (this.y - this.r < 0 || this.y + this.r > height) {
+  yEdges(gameState) {
+    if (this.y - this.r < 0 || this.y + this.r > gameState.height) {
       this.yspeed = this.yspeed * -1;
       return false;
     }
     return true;
-
   }
+
   // Check if the puck should flicker
   shouldFlicker(){
     if (gameState.time >= 400 && gameState.time <= 700) {
@@ -86,5 +87,6 @@ class Puck {
         }
       }
     }
+    export class Puck;
+
 }
-module.exports.Puck = Puck;

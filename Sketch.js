@@ -4,19 +4,19 @@ var Pucks = [],
   Paddles = [];
 
 function setup() {
-  gameState = new gameState(window.frameCount,p1Score = 0,p2Score = 0)
+  gameState = new gameState(window.frameCount,p1Score = 0,p2Score = 0,800,500)
   drawControls();
   createCanvas(800,500);
 
   // Create the initial puck
-  Pucks.push(new Puck(12, 5, 4, width/2, height/2,false));
+  Pucks.push(new Puck(12, 5, 4, gameState.width/2, gameState.height/2,false));
   // Create the left paddle
   Paddles.push(new Obj(0, 5, 180, 30, 80));
   // Create the right paddle
-  Paddles.push(new Obj(0, width-40, 180, 30, 80));
+  Paddles.push(new Obj(0, gameState.width-40, 180, 30, 80));
 
   for(i = 0; i < 3; i++){
-    Obstacles.push(new Obj(0,random(width/4,width*0.75), random(height/4,height*0.75), 20, 50));
+    Obstacles.push(new Obj(0,random(gameState.width/4,gameState.width*0.75), random(gameState.height/4,gameState.height*0.75), 20, 50));
   }
 }
 
@@ -26,11 +26,10 @@ function draw() {
   // Resets the time to 0 when it reaches totalFrames
   gameState.time = window.frameCount % totalFrames;
   gameState.slowMode();
-
   drawScores();
   checkKeys();
   getAlivePucks();
-  Pucks = []
+  Pucks = [];
   handleCollisions();
   updateAlivePucks();
   //updateObstacles();
@@ -43,8 +42,8 @@ function draw() {
 // If the last puck goes off-screen, reset
 function noPucks(){
 
-  if (alivePucks.length == 1 && !alivePucks[0].xEdges(width)) {
-    alivePucks[0].reset(width,height);
+  if (alivePucks.length == 1 && !alivePucks[0].xEdges(gameState.width)) {
+    alivePucks[0].reset(gameState.width,gameState.height);
   }
 }
 
@@ -52,7 +51,7 @@ function noPucks(){
 function updateAlivePucks(){
 
   for(let alive of alivePucks){
-    alive.yEdges();
+    alive.yEdges(gameState);
     alive.shouldFlicker();
 
     if (alive.flicker == true){
@@ -78,7 +77,7 @@ function getAlivePucks(){
   // Save only the on screen pucks
   for (let puck of Pucks) {
     puck.updated = false;
-    if (puck.xEdges(width)) {
+    if (puck.xEdges(gameState.width)) {
       alivePucks.push(puck);
     }
   }
@@ -120,7 +119,9 @@ function puckCollision(puck, obj) {
     if(obj.moving){
       puck.addMomentum(Paddles);
     }
-    createPuck(obj);
+    if (Math.random(0, 1) > 0.9) {
+      createPuck(obj);
+    }
   }
 
   // Collision on the y-axis
@@ -129,24 +130,22 @@ function puckCollision(puck, obj) {
     if(obj.moving){
       puck.addMomentum(Paddles);
     }
-    createPuck(obj);
+    if (Math.random(0, 1) > 0.9) {
+      createPuck(obj);
+    }
   }
 }
 
 // Create a new Puck at the given paddle
 function createPuck(Paddle) {
-  if (random(0, 1) > 0.9) {
-    if (Paddle.x === Paddles[0].x) {
-      newP = new Puck(Paddle.x + 20, random(1,3),random(1,2), Paddle.x + Paddle.width / 2 + 30, Paddle.y + 40,false)
-      alivePucks.push(newP);
-      return newP;
-    } else if (Paddle.x === Paddles[1].x) {
-      newP = new Puck(Paddle.x - 20, random(1,3),random(1,2), Paddle.x + Paddle.width / 2 + 30, Paddle.y + 40,false)
-      alivePucks.push(newP);
-      return newP;
+    if (Paddle.x == 5) {
+      alivePucks.push( new Puck(Paddle.x + 20, random(1,3),random(1,2), Paddle.x + Paddle.width / 2 + 30, Paddle.y + 40,false));
+    } else if (Paddle.x  == 760) {
+      alivePucks.push(new Puck(Paddle.x - 20, random(1,3),random(1,2), Paddle.x + Paddle.width / 2 + 30, Paddle.y + 40,false));
     }
   }
 
+module.exports = {
+  collides: collides,
+  createPuck: createPuck
 }
-
-module.exports.createPuck = createPuck;
